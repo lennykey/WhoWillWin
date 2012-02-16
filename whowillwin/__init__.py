@@ -9,6 +9,7 @@ def main(global_config, **settings):
     config.add_route('home', '/')
     config.add_route('mannschaften', '/mannschaften')
     config.add_route('matchesfor', '/matchesfor/{mannschaft}')
+    config.add_route('whoWillWin', '/whowillwin')
     
     config.scan()
     return config.make_wsgi_app()

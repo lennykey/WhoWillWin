@@ -86,7 +86,7 @@ def getMatchesForTeam(mannschaft):
 
 	#print type(begegnung.nameTeam1)	
 
-	dict = { (begegnung.nameTeam1).encode('utf-8') : str(begegnung.pointsTeam1).encode('utf-8'), (begegnung.nameTeam2).encode('utf-8') : str(begegnung.pointsTeam2).encode('utf-8') }
+	dict = { (begegnung.nameTeam1).encode('utf-8').decode('utf-8') : str(begegnung.pointsTeam1).encode('utf-8').decode('utf-8'), (begegnung.nameTeam2).encode('utf-8').decode('utf-8') : str(begegnung.pointsTeam2).encode('utf-8').decode('utf-8') }
         result.append( dict  )
 
 	
@@ -106,9 +106,13 @@ def getMatchesForTeam(mannschaft):
 #		''.join( result )
 #		) 
 
-@view_config(route_name='matchesfor')
+@view_config(route_name='matchesfor', renderer='templates/getmatches.pt')
 def getMatches(request):
     mannschaft = request.matchdict['mannschaft']
-    return Response(getMatchesForTeam(mannschaft))
+    return getMatchesForTeam(mannschaft)
 
+@view_config(route_name='whoWillWin', renderer='templates/whowillwin.pt')
+def whoWillWin(request):
+
+    return {'whowillwin':'you'} 
 
