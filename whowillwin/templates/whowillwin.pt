@@ -1,0 +1,40 @@
+<!Doctype html>
+<html>
+    <head>
+
+        <style type="text/css">
+        div[id*='team'] {
+            color: green; 
+        }
+        </style>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js" type="text/javascript">
+        </script>
+        <script type="text/javascript">
+        /* alert('Cool'); */
+
+        $(document).ready(function(){
+            $.get('matchesfor/FC Augsburg', function(data) {
+                $('#teama').html(data);
+            });
+
+            $.get('matchesfor/SC Freiburg', function(data) {
+                $('#teamb').html(data);
+            });
+        });
+
+        
+        </script>
+
+
+    </head>
+    <body>
+    <div>${request}</div>
+
+    <div style="float:left" id="teama"><img src="/static/loading.gif" height="50px" width="50px" /></div>
+    <div style="float:left" id="teamb"><img src="/static/loading.gif" height="50px" width="50px" /></div>
+    <div style="clear:both"></div>
+    
+
+    </body>
+</html>

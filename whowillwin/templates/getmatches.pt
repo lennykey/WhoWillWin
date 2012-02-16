@@ -1,0 +1,16 @@
+<div class='infoBox'>
+<h2>${GesuchteMannschaft}</h2>
+<p>Tore : ${Tore} Gegentore: ${Gegentore}</p>
+</div>
+<ul >
+    <li tal:repeat="Spiel Spiele"> 
+            <span tal:replace="Spiel.keys()[0]" />
+            <span tal:replace="Spiel.values()[0]" />
+            vs.
+            <span tal:replace="Spiel.keys()[1]" />
+            <span tal:replace="Spiel.values()[1]" />
+    </li>
+</ul>
+
+
+
