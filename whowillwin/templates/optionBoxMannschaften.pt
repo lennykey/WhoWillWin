@@ -1,0 +1,11 @@
+<form class="optionBoxMannschaften" action="">
+ <p>
+    <select name="mannschaften" size="1">
+      <option class="mannschaft" tal:repeat="team teams">
+       <span tal:replace="team" />
+      </option>
+    </select>
+    <input type="button" value="Select"/>
+  </p>
+
+</form>

@@ -1,0 +1,7 @@
+<div id="listMannschaften">
+<ul >
+    <li class="mannschaft" tal:repeat="team teams"> 
+        <span tal:replace="team" />
+    </li>
+</ul>
+</div>
