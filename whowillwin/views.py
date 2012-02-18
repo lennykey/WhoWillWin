@@ -6,8 +6,8 @@ from pyramid.response import Response
 def my_view(request):
     return {'project':'whoWillWin'}
 
-@view_config(route_name='mannschaften', renderer='templates/mannschaften.pt')
-def mannschaften(request):
+#@view_config(route_name='mannschaften', renderer='templates/mannschaften.pt')
+def mannschaften():
     url = "http://www.OpenLigaDB.de/Webservices/Sportsdata.asmx?WSDL"
     client = Client(url)
     teams = client.service.GetTeamsByLeagueSaison( 'bl1', '2011' )
@@ -31,17 +31,26 @@ def mannschaften(request):
         print team.teamName
         teamNameList.append( team.teamName.encode('utf-8').decode('utf-8') )
 
-    result = []
-    result.append('<ul>')
+    #result = []
+    #result.append('<ul>')
 
-    for element in teamNameList:
-        result.append('<li>' + element + '</li>')
+    #for element in teamNameList:
+    #    result.append('<li>' + element + '</li>')
 
-    result.append('</ul>')
+    #result.append('</ul>')
    
     #return Response( 'Bundesliga Mannschaften ' + str (len( teamNameList ) ) + ' '  + ''.join( result ) ) 
     #return Response(str(result).decode('utf-8')) 
     return {'teams' : teamNameList }
+
+@view_config(route_name='ulMannschaften', renderer='templates/ulMannschaften.pt')
+def ulMannschaften(request):
+    return mannschaften() 
+
+@view_config(route_name='optionBoxMannschaften', renderer='templates/optionBoxMannschaften.pt')
+def optionBoxMannschaften(request):
+    return mannschaften() 
+
 
 def getMatchesForTeam(mannschaft):
     url = 'http://www.openligadb.de/Webservices/Sportsdata.asmx?WSDL'

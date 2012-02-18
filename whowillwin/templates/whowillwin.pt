@@ -3,44 +3,129 @@
     <head>
 
         <style type="text/css">
+
+        *{
+            font-size: 12pt;     
+        }
         div[id*='team'] {
             color: green; 
+            /*
+            width: 30em;
+            */
+            min-width: 25em;
+            border-style: solid;
+            border-width: 1px;
+            padding: 1em;
+            margin: 0.3em;
+            float: left;
+
         }
+
+        div#mannschaften{
+            width: 20em;
+            float: left;
+            border-style: solid;
+            border-width: 1px;
+            padding: 1em;
+            margin: 0.3em;
+
+        }
+
+        div#mannschaften #listMannschaften ul li{
+            /*display: block; */
+                
+        }
+
+        div[id*="selectMannschaft"]{
+            float:left;     
+        }
+
         </style>
 
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js" type="text/javascript">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript">
         </script>
         <script type="text/javascript">
         /* alert('Cool'); */
 
         $(document).ready(function(){
 
+            $('#selectMannschaftEins').load('optionboxmannschaften');
+
+            $(document).on('click', '#selectMannschaftEins form input[type="button"]', 
+                function(){
+                    /*alert( $('#selectMannschaftEins select[name=mannschaften]').val() );*/
+                     
+                    /*$('#teama').load(escape( 'matchesfor/' + $('#selectMannschaftEins select option:selected').val() ) );*/
+                    $('#teama').html('<img src="/static/loading.gif" height="50px" width="50px" />');
+                    $.get( 'matchesfor/' + $('#selectMannschaftEins select option:selected').val(), function(data){
+                        $('#teama').html(data);
+                    });
+                    /* alert( $('#selectMannschaftEins select option:selected').val() ); */
+                     
+                    /* alert("cool"); */
+                } 
+            
+            );
+            
+            $('#selectMannschaftZwei').load('optionboxmannschaften');
+
+            $(document).on('click', '#selectMannschaftZwei form input[type="button"]', 
+                function(){
+                    /*alert( $('#selectMannschaftEins select[name=mannschaften]').val() );*/
+                     
+                    /*$('#teama').load(escape( 'matchesfor/' + $('#selectMannschaftEins select option:selected').val() ) );*/
+                    $('#teamb').html('<img src="/static/loading.gif" height="50px" width="50px" />');
+                    $.get( 'matchesfor/' + $('#selectMannschaftZwei select option:selected').val(), function(data){
+                        $('#teamb').html(data);
+                    });
+                    /* alert( $('#selectMannschaftEins select option:selected').val() ); */
+                     
+                    /* alert("cool"); */
+                } 
+            
+            );
             $('#teameins a').click(
-                    function(){
-                        $('#teama').html('<img src="/static/loading.gif" height="50px" width="50px" />');
-                        alert($(this).text());
-                        $.get('matchesfor/' + $(this).text(), function(data) {
-                            $('#teama').html(data);
-                        });    
-                    }
+                function(){
+                    $('#teama').html('<img src="/static/loading.gif" height="50px" width="50px" />');
+                    alert($(this).text());
+                    $.get('matchesfor/' + $(this).text(), function(data) {
+                        $('#teama').html(data);
+                    });    
+                }
             
             );
             
             $('#teameins input[type=button]').click(
-                    function(){
-                        $('#teama').html('<img src="/static/loading.gif" height="50px" width="50px" />');
-                        alert( $('#inputTeamEins').val() );
-                        $.get('matchesfor/' + $('#inputTeamEins').val() , function(data) {
-                            $('#teama').html(data);
-                        });    
-                    }
+                function(){
+                    $('#teama').html('<img src="/static/loading.gif" height="50px" width="50px" />');
+                    alert( $('#inputTeamEins').val() );
+                    $.get('matchesfor/' + $('#inputTeamEins').val() , function(data) {
+                        $('#teama').html(data);
+                    });    
+                }
             
             );
-                
-
+            
+            /* 
             $.get('matchesfor/SC Freiburg', function(data) {
                 $('#teamb').html(data);
             });
+            */
+
+            /*$('#teamb').load(escape('matchesfor/SC Freiburg'));*/
+            
+            /* 
+            $.get('mannschaften', function(data) {
+                $('#mannschaften').html(data);
+
+            })
+            .success(function() {
+            });
+
+            */
+
+            $('#mannschaften').html('<img src="/static/loading.gif" height="50px" width="50px" />').load('ulmannschaften');
+
         });
 
         
@@ -51,7 +136,7 @@
     <body>
     <div>${request}</div>
     
-    <form id="teameins" action="#" method="get">
+    <form id="teameins" action="" method="get">
         <a href="#">FC Bayern München</a>
         <label>
         Team Eins:
@@ -60,10 +145,15 @@
         <input type="button" value="Suchen">
     </form> 
 
-
-    <div style="float:left" id="teama"><img src="/static/loading.gif" height="50px" width="50px" /></div>
-    <div style="float:left" id="teamb"><img src="/static/loading.gif" height="50px" width="50px" /></div>
+    <div id="selectMannschaftEins"></div>
+    <div id="selectMannschaftZwei">SelectMannschaft2</div>
     <div style="clear:both"></div>
+    <div id="teama">Wählen sie eine Mannschaft zum Vergleich</div>
+    <div id="teamb">Wählen sie eine Mannschaft zum Vergleich</div>
+    <div id="mannschaften">Bundesligamannschaften werden geladen</div>
+    <div style="clear:both"></div>
+
+    <div>xool</div>
     
 
     </body>
