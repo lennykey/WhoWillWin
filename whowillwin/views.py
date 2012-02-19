@@ -125,3 +125,16 @@ def whoWillWin(request):
 
     return {'whowillwin':'you'} 
 
+@view_config(route_name='compareTwoTeamsSeason', renderer='templates/compareTwoTeamsSeason.pt')
+def compareTwoTeamsSeason(request):
+    heimErgebnis = ( float( request.matchdict['heimtore'] ) / float (request.matchdict['gastgegentore'] ) ) * ( float (request.matchdict['heimtore'] ) / float( request.matchdict['spieltag'] ) )    
+    
+    gastErgebnis = ( float( request.matchdict['gasttore'] ) / float (request.matchdict['heimgegentore'] ) ) * ( float (request.matchdict['gasttore'] ) / float( request.matchdict['spieltag'] ) )    
+    
+
+
+    return {'heimmannschaft' : request.matchdict['heim'], 'heimErgebnis': int( round(heimErgebnis) ), 'gastmannschaft': request.matchdict['gast']  , 'gastErgebnis' : int( round(gastErgebnis) ) } 
+
+
+
+

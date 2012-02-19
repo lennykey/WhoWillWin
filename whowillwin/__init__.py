@@ -18,6 +18,8 @@ def main(global_config, **settings):
 
     config.add_route('matchesfor', '/matchesfor/{mannschaft}')
     config.add_route('whoWillWin', '/whowillwin')
+    config.add_route('compareTwoTeamsSeason', '/comparetwoteamsseason/{spieltag}/{heim}/{heimtore}/{heimgegentore}/{gast}/{gasttore}/{gastgegentore}')
+    #config.add_route('compareTwoTeamsSeason', '/comparetwoteamsseason')
     
     config.scan()
     return config.make_wsgi_app()

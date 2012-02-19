@@ -1,6 +1,6 @@
 <div class='infoBox'>
 <h2>${GesuchteMannschaft}</h2>
-<p>Tore : ${Tore} Gegentore: ${Gegentore}</p>
+<p>Tore : <em class="tore">${Tore}</em> Gegentore: <em class="gegentore">${Gegentore}</em></p>
 </div>
 <ul >
     <li tal:repeat="Spiel Spiele"> 

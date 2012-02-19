@@ -7,12 +7,13 @@
         *{
             font-size: 12pt;     
         }
+
         div[id*='team'] {
             color: green; 
             /*
             width: 30em;
             */
-            min-width: 25em;
+            width: 25em;
             border-style: solid;
             border-width: 1px;
             padding: 1em;
@@ -36,19 +37,43 @@
                 
         }
 
-        div[id*="selectMannschaft"]{
+        div[id*='selectMannschaft']{
             float:left;     
+            border-style: solid;
+            border-width: 1px;
+            border-color: #000;
+            min-height: 3em;
+            /*background-color: grey;*/
+            margin: 0.3em;
+            padding: 1em;
+            width: 25em;
+        }
+
+        div#berechnungen{
+            border-style: solid;
+            border-color: green; 
+            border-width: 1px;
+            float: left;    
+            margin: 0.3em;
+            padding: 1em;
+
+        }
+        
+        div#berechneMannschaften{
+            float: left;     
         }
 
         </style>
 
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript">
         </script>
+
         <script type="text/javascript">
         /* alert('Cool'); */
 
         $(document).ready(function(){
 
+            $('#selectMannschaftEins').html('<img src="/static/loading.gif" height="50px" width="50px" />');
             $('#selectMannschaftEins').load('optionboxmannschaften');
 
             $(document).on('click', '#selectMannschaftEins form input[type="button"]', 
@@ -59,14 +84,26 @@
                     $('#teama').html('<img src="/static/loading.gif" height="50px" width="50px" />');
                     $.get( 'matchesfor/' + $('#selectMannschaftEins select option:selected').val(), function(data){
                         $('#teama').html(data);
+
+                    }).success(function(){
+                        $('#teama ul li').each( function(index){
+                            if($(this).text().search('-1') >= 0){
+                                /*alert($(this).text());*/
+                                $(this).css('color','grey');    
+                            }     
+                        
+                        });
+                        
                     });
-                    /* alert( $('#selectMannschaftEins select option:selected').val() ); */
+
+                                        /* alert( $('#selectMannschaftEins select option:selected').val() ); */
                      
                     /* alert("cool"); */
                 } 
             
             );
             
+            $('#selectMannschaftZwei').html('<img src="/static/loading.gif" height="50px" width="50px" />');
             $('#selectMannschaftZwei').load('optionboxmannschaften');
 
             $(document).on('click', '#selectMannschaftZwei form input[type="button"]', 
@@ -77,7 +114,30 @@
                     $('#teamb').html('<img src="/static/loading.gif" height="50px" width="50px" />');
                     $.get( 'matchesfor/' + $('#selectMannschaftZwei select option:selected').val(), function(data){
                         $('#teamb').html(data);
-                    });
+                       
+                        /*
+                            Wartet bis der Inhalt geladen wird, danach wird ueber den Inhalt iteriert und kann veraendert werden 
+                        */ 
+                    
+                    }).success(
+                        function(){
+                            $('#teamb ul li').each(
+                                function(index){
+                                    if($(this).text().search('-1') >= 0){
+                                        /*alert($(this).text());*/
+                                        $(this).css('color','grey');    
+                                    }
+                                }
+                            );    
+                        }
+                    );
+                    
+                    /*
+                        Wird sofort aufgerufen: Wartet nicht, bis der Inhalt von teamb geladen wurde.
+                        Hier kann nicht auf den Inhalt von teamb zugegriffen werden, da er noch nicht
+                        existiert. Am besten die .success-Funktion nutzen
+                    */ 
+                    //alert('after') ;
                     /* alert( $('#selectMannschaftEins select option:selected').val() ); */
                      
                     /* alert("cool"); */
@@ -95,13 +155,18 @@
             
             );
             
-            $('#teameins input[type=button]').click(
+            $('#teameins input[type=button]').on('click',
                 function(){
                     $('#teama').html('<img src="/static/loading.gif" height="50px" width="50px" />');
                     alert( $('#inputTeamEins').val() );
                     $.get('matchesfor/' + $('#inputTeamEins').val() , function(data) {
+                        
                         $('#teama').html(data);
-                    });    
+
+                    });  
+                    
+                      
+                    alert('cool');
                 }
             
             );
@@ -124,7 +189,32 @@
 
             */
 
-            $('#mannschaften').html('<img src="/static/loading.gif" height="50px" width="50px" />').load('ulmannschaften');
+            /*$('#mannschaften').html('<img src="/static/loading.gif" height="50px" width="50px" />').load('ulmannschaften');*/
+            
+            $('#berechneMannschaften input[type="button"]').on('click',
+                function(){
+
+                    $('#berechnungen').html('<img src="/static/loading.gif" height="50px" width="50px" />');
+                    //alert($('#berechneMannschaften input[type="text"]').val());
+                     $.get('comparetwoteamsseason/' +
+                        $('#berechneMannschaften input[type="text"]').val() + '/' +
+                        $('#teama h2').text() + '/' +
+                        $('#teama .tore').text() + '/' +
+                        $('#teama .gegentore').text() + '/' +
+                        $('#teamb h2').text() + '/' +
+                        $('#teamb .tore').text() + '/' +
+                        $('#teamb .gegentore').text(),
+                        
+                        function(data) {
+                            $('#berechnungen').html(data);
+                        }
+                    ); 
+
+                    //alert('cool');
+                
+                } 
+            
+            );
 
         });
 
@@ -147,10 +237,16 @@
 
     <div id="selectMannschaftEins"></div>
     <div id="selectMannschaftZwei">SelectMannschaft2</div>
+    <div id="berechneMannschaften">
+        <form action="">
+            <input type="text" />
+            <input type="button" value="Berechnen"/>
+        </form> 
+    </div>
     <div style="clear:both"></div>
     <div id="teama">Wählen sie eine Mannschaft zum Vergleich</div>
     <div id="teamb">Wählen sie eine Mannschaft zum Vergleich</div>
-    <div id="mannschaften">Bundesligamannschaften werden geladen</div>
+    <div id="berechnungen">Bundesligamannschaften werden geladen</div>
     <div style="clear:both"></div>
 
     <div>xool</div>
