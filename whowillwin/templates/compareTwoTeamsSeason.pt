@@ -1,0 +1,4 @@
+<table>
+<tr><td>${heimmannschaft}</td><td>${gastmannschaft}</tr>
+<tr><td>${heimErgebnis}</td><td>${gastErgebnis}</tr>
+</table>
