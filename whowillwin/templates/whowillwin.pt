@@ -1,6 +1,7 @@
 <!Doctype html>
 <html>
     <head>
+    	<title>WhoWillWinToday</title>
 
         <style type="text/css">
 
@@ -244,9 +245,9 @@
         </form> 
     </div>
     <div style="clear:both"></div>
-    <div id="teama">Wählen sie eine Mannschaft zum Vergleich</div>
-    <div id="teamb">Wählen sie eine Mannschaft zum Vergleich</div>
-    <div id="berechnungen">Bundesligamannschaften werden geladen</div>
+    <div id="teama">Wählen sie eine Mannschaft zum Vergleich ...</div>
+    <div id="teamb">Wählen sie eine Mannschaft zum Vergleich ...</div>
+    <div id="berechnungen">Bundesligamannschaften werden geladen ...</div>
     <div style="clear:both"></div>
 
     <div>xool</div>
