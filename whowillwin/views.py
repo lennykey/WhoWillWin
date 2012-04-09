@@ -1,7 +1,9 @@
 from pyramid.view import view_config
 from suds.client import Client
-from pyramid.response import Response
+#from pyramid.response import Response
+import logging
 
+log = logging.getLogger(__name__)
 
 
 @view_config(route_name='home', renderer='templates/mytemplate.pt')
@@ -68,8 +70,8 @@ def getMatchesForTeam(mannschaft):
     for match in alleSpiele.Matchdata:
         if match.nameTeam1 == gesuchteMannschaft or match.nameTeam2 == gesuchteMannschaft:
             mannschaftsSpiele.append(match)
-            print match.nameTeam1
-            print match.nameTeam2
+            log.debug(match.nameTeam1)
+            log.debug(match.nameTeam2)
             
     result = []
     
@@ -101,7 +103,7 @@ def getMatchesForTeam(mannschaft):
         mydict = { (begegnung.nameTeam1).encode('utf-8').decode('utf-8') : str(begegnung.pointsTeam1).encode('utf-8').decode('utf-8'), (begegnung.nameTeam2).encode('utf-8').decode('utf-8') : str(begegnung.pointsTeam2).encode('utf-8').decode('utf-8') }
         result.append( mydict  )
 
-        print mydict
+        #print mydict
     
     #result.append('</ul>')
     #print alleSpiele
