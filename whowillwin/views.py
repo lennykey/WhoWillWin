@@ -1,7 +1,9 @@
 from pyramid.view import view_config
 from suds.client import Client
+from whowillwin.Team import Team
 #from pyramid.response import Response
 import logging
+from whowillwin.ArrayOfTeam import ArrayOfTeam
 
 log = logging.getLogger(__name__)
 
@@ -10,28 +12,41 @@ log = logging.getLogger(__name__)
 def my_view(request):
     return {'project':'whoWillWin'}
 
-#@view_config(route_name='mannschaften', renderer='templates/mannschaften.pt')
-def mannschaften():
+
+def bundesligaMannschaften2012OpenLigaDB():
     url = "http://www.OpenLigaDB.de/Webservices/Sportsdata.asmx?WSDL"
     client = Client(url)
-    teams = client.service.GetTeamsByLeagueSaison( 'bl1', '2011' )
+    return client.service.GetTeamsByLeagueSaison( 'bl1', '2011' )
+
+#@view_config(route_name='mannschaften', renderer='templates/mannschaften.pt')
+def mannschaften(client):
+    #url = "http://www.OpenLigaDB.de/Webservices/Sportsdata.asmx?WSDL"
+    #client = Client(url)
+    #myClient = client
+    teams = ArrayOfTeam(client.Team)
 
     teamNameList = []
-
+    teamList = []
+    
+    for team in teams.Team:
+        mockTeam = Team(team.teamID, team.teamName, team.teamIconURL)
+        teamList.append(mockTeam)
+        
     #logging.info(teams)
     #logging.info('First logger')
     #logging.info(str(teams))
 
     #print teams[0]
     
-    #for team in teams.Team:
+    #for team in teams.ArrayOfTeam:
     #    print type(team)
     #    teamName = team.teamName
 
     #    teamNameList.append(teamName)
 
 
-    for team in teams.Team:
+    #for team in teams.ArrayOfTeam:
+    for team in teamList:
         #print team.teamName
         teamNameList.append( team.teamName.encode('utf-8').decode('utf-8') )
 
@@ -53,7 +68,7 @@ def ulMannschaften(request):
 
 @view_config(route_name='optionBoxMannschaften', renderer='templates/optionBoxMannschaften.pt')
 def optionBoxMannschaften(request):
-    return mannschaften() 
+    return mannschaften(bundesligaMannschaften2012OpenLigaDB()) 
 
 
 def getMatchesForTeam(mannschaft):
