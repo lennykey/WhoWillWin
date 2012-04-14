@@ -4,13 +4,22 @@ import unittest
 
 from pyramid import testing
 from views import mannschaften
+from whowillwin.views import bundesligaMannschaften2012OpenLigaDB
+from Team import Team
+from whowillwin.ArrayOfTeam import ArrayOfTeam 
 
 class ViewTests(unittest.TestCase):
     def setUp(self):
         self.config = testing.setUp()
-
+        #Mocking WSDL Instance
+        fca = Team("FCA", "FCA", "FCA")
+        koeln = Team("1. FC Köln", "1. FC Köln", "1. FC Köln")
+        listeMannschaften = [fca, koeln]
+        self.mockedTeams = ArrayOfTeam(listeMannschaften) 
+        
     def tearDown(self):
         testing.tearDown()
+        
 
     def test_my_view(self):
         from views import my_view
@@ -19,11 +28,13 @@ class ViewTests(unittest.TestCase):
         self.assertEqual(info['project'], 'whoWillWin')
         
     def testMannschaften(self):
-        self.assertEqual(type( dict() ), type(mannschaften()), "Kein Dictionary zurueckgekommen")
+        #client = bundesligaMannschaften2012OpenLigaDB()
+        client = self.mockedTeams
+        self.assertEqual(type( dict() ), type(mannschaften(client)), "Kein Dictionary zurueckgekommen")
         
     def testIstFCKoelnInDictionary(self):
-        #print mannschaften()
-        #print mannschaften().items()[0][1]
+        #print mannschaften(bundesligaMannschaften2012OpenLigaDB())
+        #print mannschaften(bundesligaMannschaften2012OpenLigaDB()).items()[0][1]
         
         #dieseMannschaften = []
         #for mannschaftListe in (mannschaften().values()):
@@ -32,6 +43,31 @@ class ViewTests(unittest.TestCase):
                    
         #print dieseMannschaften 
         #print "1. FC Köln".encode("utf-8")
-        #print "1. FC Köln".decode("utf-8")
-            
-        self.assertIn("1. FC Köln".decode("utf-8"), mannschaften().items()[0][1], "FC Augsburg nicht vorhanden")
+        #print "1. FC Köln".decode
+        #listeMannschaften = {"mockedTeams" : ["FC Augsburg"]}
+        #listeMannschaften = { ArrayOfTeam[] = (ArrayOfTeam){ teamID = 65 teamName = "1. FC Köln" teamIconURL = "http://www.openligadb.de/images/teamicons/1_FC_Koeln.gif" }}'
+        #client = listeMannschaften 
+        #fca = Team("FCA", "FCA", "FCA")
+        #koeln = Team("1. FC Köln", "1. FC Köln", "1. FC Köln")
+        #listeMannschaften = [fca, koeln]
+        
+        #mockedTeams = ArrayOfTeam(listeMannschaften) 
+        #print listeMannschaften
+        #client = bundesligaMannschaften2012OpenLigaDB() 
+        
+        client = self.mockedTeams
+        #print type(client)
+        #print client 
+        #client = mannschaften
+        self.assertIn("1. FC Köln".decode("utf-8"), mannschaften(client).items()[0][1], "1. FC Köln nicht vorhanden")
+        
+    def testIstFCKoelnInDictionaryWSDL(self):
+        client = bundesligaMannschaften2012OpenLigaDB() 
+        #print type(client)
+        #print client 
+        #client = mannschaften
+        self.assertIn("1. FC Köln".decode("utf-8"), mannschaften(client).items()[0][1], "1. FC Köln nicht vorhanden")   
+        
+        
+        
+        
