@@ -226,12 +226,12 @@
     </head>
     <body>
     <div>${request}</div>
-    
+    <div>${aktuellerSpieltag}</div>
     <form id="teameins" action="" method="get">
         <a href="#">FC Bayern München</a>
         <label>
         Team Eins:
-        <input id="inputTeamEins" type="text" >
+        <input id="inputTeamEins" type="text"  >
         </label>
         <input type="button" value="Suchen">
     </form> 
@@ -240,7 +240,7 @@
     <div id="selectMannschaftZwei">SelectMannschaft2</div>
     <div id="berechneMannschaften">
         <form action="">
-            <input type="text" />
+            <input type="text" value="${aktuellerSpieltag}" />
             <input type="button" value="Berechnen"/>
         </form> 
     </div>

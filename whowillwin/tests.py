@@ -4,9 +4,11 @@ import unittest
 
 from pyramid import testing
 from views import mannschaften
-from whowillwin.views import bundesligaMannschaften2012OpenLigaDB
+from whowillwin.views import bundesligaMannschaften2012OpenLigaDB,\
+    aktuellerSpieltag, group2011
 from Team import Team
 from whowillwin.ArrayOfTeam import ArrayOfTeam 
+from whowillwin.Group import Group 
 
 class ViewTests(unittest.TestCase):
     def setUp(self):
@@ -61,7 +63,7 @@ class ViewTests(unittest.TestCase):
         #client = mannschaften
         self.assertIn("1. FC Köln".decode("utf-8"), mannschaften(client).items()[0][1], "1. FC Köln nicht vorhanden")
         
-    def testIstFCKoelnInDictionaryWSDL(self):
+    def IstFCKoelnInDictionaryWSDL(self):
         client = bundesligaMannschaften2012OpenLigaDB() 
         #print type(client)
         #print client 
@@ -70,4 +72,14 @@ class ViewTests(unittest.TestCase):
         
         
         
+    def AktuellerSpieltagWSDL(self):
+        group = group2011()
+        spieltag = aktuellerSpieltag(group)
+        self.assertEqual(type(1), type(spieltag), "Typ des Spieltags int ist nicht korrekt"  )   
+    
+    def testAktuellerSpieltagMocked(self):
+        mockedGroup = Group("31. Spieltag",31, 265 )
+        #group = group2011()
+        self.assertEqual(type(1), type(mockedGroup.groupOrderID), "Typ des Spieltags int ist nicht korrekt" )   
+       
         

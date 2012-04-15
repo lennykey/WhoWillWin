@@ -4,6 +4,7 @@ from whowillwin.Team import Team
 #from pyramid.response import Response
 import logging
 from whowillwin.ArrayOfTeam import ArrayOfTeam
+from whowillwin.Group import Group 
 
 log = logging.getLogger(__name__)
 
@@ -12,10 +13,12 @@ log = logging.getLogger(__name__)
 def my_view(request):
     return {'project':'whoWillWin'}
 
+def openLigaWSDLUrl():
+    url = "http://www.OpenLigaDB.de/Webservices/Sportsdata.asmx?WSDL"
+    return url
 
 def bundesligaMannschaften2012OpenLigaDB():
-    url = "http://www.OpenLigaDB.de/Webservices/Sportsdata.asmx?WSDL"
-    client = Client(url)
+    client = Client(openLigaWSDLUrl())
     return client.service.GetTeamsByLeagueSaison( 'bl1', '2011' )
 
 #@view_config(route_name='mannschaften', renderer='templates/mannschaften.pt')
@@ -29,8 +32,8 @@ def mannschaften(client):
     teamList = []
     
     for team in teams.Team:
-        mockTeam = Team(team.teamID, team.teamName, team.teamIconURL)
-        teamList.append(mockTeam)
+        thisTeam = Team(team.teamID, team.teamName, team.teamIconURL)
+        teamList.append(thisTeam)
         
     #logging.info(teams)
     #logging.info('First logger')
@@ -143,8 +146,10 @@ def getMatches(request):
 
 @view_config(route_name='whoWillWin', renderer='templates/whowillwin.pt')
 def whoWillWin(request):
+    group = group2011()
+    aktuellerspieltag = aktuellerSpieltag(group)
     #print "def whoWillWin"
-    return {'whowillwin':'you'} 
+    return {'whowillwin':'you', 'aktuellerSpieltag': aktuellerspieltag } 
 
 @view_config(route_name='compareTwoTeamsSeason', renderer='templates/compareTwoTeamsSeason.pt')
 def compareTwoTeamsSeason(request):
@@ -159,6 +164,15 @@ def compareTwoTeamsSeason(request):
 
     return {'heimmannschaft' : request.matchdict['heim'], 'heimErgebnis': int( round(heimErgebnis) ), 'gastmannschaft': request.matchdict['gast']  , 'gastErgebnis' : int( round(gastErgebnis) ) } 
 
+def group2011(): 
+    client = Client(openLigaWSDLUrl())
+    currentGroup = client.service.GetCurrentGroup( 'bl1', '2011')
+    return currentGroup
 
+def aktuellerSpieltag(group):
+    group = Group(group.groupName, group.groupOrderID, group.groupID)
+    #return group.groupName, group.groupID, group.groupOrderID
+    return group.groupOrderID
+    
 
 
