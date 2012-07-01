@@ -6,3 +6,4 @@ whoWillWin README
 // TEST 4 for hook
 // TEST 5 for hook
 // TEST 6 for hook
+// TEST 7 for hook
