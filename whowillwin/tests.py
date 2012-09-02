@@ -4,8 +4,8 @@ import unittest
 
 from pyramid import testing
 from views import mannschaften
-from whowillwin.views import bundesligaMannschaften2012OpenLigaDB,\
-    aktuellerSpieltag, group2011
+from whowillwin.views import bundesligaMannschaftenOpenLigaDB,\
+    aktuellerSpieltag, currentgroup
 from Team import Team
 from whowillwin.ArrayOfTeam import ArrayOfTeam 
 from whowillwin.Group import Group 
@@ -64,16 +64,15 @@ class ViewTests(unittest.TestCase):
         self.assertIn("1. FC Köln".decode("utf-8"), mannschaften(client).items()[0][1], "1. FC Köln nicht vorhanden")
         
     def IstFCKoelnInDictionaryWSDL(self):
-        client = bundesligaMannschaften2012OpenLigaDB() 
+        year = 2012
+        client = bundesligaMannschaftenOpenLigaDB(year) 
         #print type(client)
         #print client 
         #client = mannschaften
         self.assertIn("1. FC Köln".decode("utf-8"), mannschaften(client).items()[0][1], "1. FC Köln nicht vorhanden")   
         
-        
-        
     def AktuellerSpieltagWSDL(self):
-        group = group2011()
+        group = currentgroup()
         spieltag = aktuellerSpieltag(group)
         self.assertEqual(type(1), type(spieltag), "Typ des Spieltags int ist nicht korrekt"  )   
     

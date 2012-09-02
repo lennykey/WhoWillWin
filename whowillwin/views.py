@@ -2,11 +2,27 @@ from pyramid.view import view_config
 from suds.client import Client
 from whowillwin.Team import Team
 #from pyramid.response import Response
-import logging
 from whowillwin.ArrayOfTeam import ArrayOfTeam
 from whowillwin.Group import Group 
 
+import logging
+import datetime
+
 log = logging.getLogger(__name__)
+
+
+def aktuelleSaison():
+    now = datetime.datetime.now()
+    year = now.year
+    month = now.month
+    #month = 3
+
+    if(month < 7):
+        year = year - 1
+
+    log.debug("Aktuelles Jahr: %s" % year)
+    log.debug("Aktueller Monat: %s" % month)
+    return year
 
 
 @view_config(route_name='home', renderer='templates/mytemplate.pt')
@@ -17,9 +33,10 @@ def openLigaWSDLUrl():
     url = "http://www.OpenLigaDB.de/Webservices/Sportsdata.asmx?WSDL"
     return url
 
-def bundesligaMannschaften2012OpenLigaDB():
+def bundesligaMannschaftenOpenLigaDB():
+    year = aktuelleSaison()
     client = Client(openLigaWSDLUrl())
-    return client.service.GetTeamsByLeagueSaison( 'bl1', '2011' )
+    return client.service.GetTeamsByLeagueSaison('bl1', year)
 
 #@view_config(route_name='mannschaften', renderer='templates/mannschaften.pt')
 def mannschaften(client):
@@ -71,13 +88,18 @@ def ulMannschaften(request):
 
 @view_config(route_name='optionBoxMannschaften', renderer='templates/optionBoxMannschaften.pt')
 def optionBoxMannschaften(request):
-    return mannschaften(bundesligaMannschaften2012OpenLigaDB()) 
+    return mannschaften(bundesligaMannschaftenOpenLigaDB()) 
 
 
 def getMatchesForTeam(mannschaft):
+    '''
+        Gibt die Spielbegegnungen fuer die uebergebene Mannschaft und Tore und Gegentore dieser
+        zurueck
+    '''
     url = 'http://www.openligadb.de/Webservices/Sportsdata.asmx?WSDL'
     client = Client(url)
-    alleSpiele = client.service.GetMatchdataByLeagueSaison('bl1', '2011')
+    year = aktuelleSaison()
+    alleSpiele = client.service.GetMatchdataByLeagueSaison('bl1', year)
 
     gesuchteMannschaft = mannschaft 
     gesuchteMannschaftTore = 0
@@ -146,8 +168,10 @@ def getMatches(request):
 
 @view_config(route_name='whoWillWin', renderer='templates/whowillwin.pt')
 def whoWillWin(request):
-    group = group2011()
+    group = currentgroup()
     aktuellerspieltag = aktuellerSpieltag(group)
+    log.debug('Aktuelle Saison: %s' % aktuelleSaison())
+    #log.debug("Aktueller Spieltag %s" % aktuellerspieltag)
     #print "def whoWillWin"
     return {'whowillwin':'you', 'aktuellerSpieltag': aktuellerspieltag } 
 
@@ -164,15 +188,16 @@ def compareTwoTeamsSeason(request):
 
     return {'heimmannschaft' : request.matchdict['heim'], 'heimErgebnis': int( round(heimErgebnis) ), 'gastmannschaft': request.matchdict['gast']  , 'gastErgebnis' : int( round(gastErgebnis) ) } 
 
-def group2011(): 
+def currentgroup(): 
     client = Client(openLigaWSDLUrl())
-    currentGroup = client.service.GetCurrentGroup( 'bl1', '2011')
+    currentGroup = client.service.GetCurrentGroup('bl1')
+    log.debug(currentGroup)
     return currentGroup
 
 def aktuellerSpieltag(group):
     group = Group(group.groupName, group.groupOrderID, group.groupID)
     #return group.groupName, group.groupID, group.groupOrderID
+    log.debug(group.groupName)
+    log.debug(group.groupOrderID)
+    log.debug(group.groupID)
     return group.groupOrderID
-    
-
-
