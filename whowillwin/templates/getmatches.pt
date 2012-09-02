@@ -5,10 +5,10 @@
 <ul >
     <li tal:repeat="Spiel Spiele"> 
             <span tal:replace="Spiel.keys()[0]" />
-            <span tal:replace="Spiel.values()[0]" />
-            vs.
+            <span class="ergebnis"><span tal:replace="Spiel.values()[0]" /></span>
+            <span>vs.</span>
+            <span class="ergebnis"><span tal:replace="Spiel.values()[1]" /></span>
             <span tal:replace="Spiel.keys()[1]" />
-            <span tal:replace="Spiel.values()[1]" />
     </li>
 </ul>
 

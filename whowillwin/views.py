@@ -90,7 +90,6 @@ def ulMannschaften(request):
 def optionBoxMannschaften(request):
     return mannschaften(bundesligaMannschaftenOpenLigaDB()) 
 
-
 def getMatchesForTeam(mannschaft):
     '''
         Gibt die Spielbegegnungen fuer die uebergebene Mannschaft und Tore und Gegentore dieser
