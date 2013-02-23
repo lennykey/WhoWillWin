@@ -184,8 +184,7 @@ def compareTwoTeamsSeason(request):
     gastErgebnis = ( ( float( request.matchdict['gasttore'] ) / float( request.matchdict['spieltag'] ) ) + float( request.matchdict['heimgegentore'] ) / float( request.matchdict['spieltag'] ) ) / 2 
 
      
-    return {'heimnotround': ( heimErgebnis) ), 'gastnotround' : (gastErgebnis) ) , 
-'heimmannschaft' : request.matchdict['heim'], 'heimErgebnis': int( round(heimErgebnis) ), 'gastmannschaft': request.matchdict['gast']  , 'gastErgebnis' : int( round(gastErgebnis) ) } 
+    return {'heimnotround': float(heimErgebnis), 'gastnotround' : float(gastErgebnis), 'heimmannschaft' : request.matchdict['heim'], 'heimErgebnis': int( round(heimErgebnis) ), 'gastmannschaft': request.matchdict['gast'] , 'gastErgebnis' : int( round(gastErgebnis) ) } 
 
 def currentgroup(): 
     client = Client(openLigaWSDLUrl())
