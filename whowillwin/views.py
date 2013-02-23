@@ -3,7 +3,8 @@ from suds.client import Client
 from whowillwin.Team import Team
 #from pyramid.response import Response
 from whowillwin.ArrayOfTeam import ArrayOfTeam
-from whowillwin.Group import Group 
+from whowillwin.Group import Group
+
 
 import logging
 import datetime
@@ -24,11 +25,9 @@ def aktuelleSaison():
     log.debug("Aktueller Monat: %s" % month)
     return year
 
-
 @view_config(route_name='home', renderer='templates/mytemplate.pt')
 def my_view(request):
     return {'project':'whoWillWin'}
-
 def openLigaWSDLUrl():
     url = "http://www.OpenLigaDB.de/Webservices/Sportsdata.asmx?WSDL"
     return url
@@ -184,8 +183,9 @@ def compareTwoTeamsSeason(request):
     
     gastErgebnis = ( ( float( request.matchdict['gasttore'] ) / float( request.matchdict['spieltag'] ) ) + float( request.matchdict['heimgegentore'] ) / float( request.matchdict['spieltag'] ) ) / 2 
 
-
-    return {'heimmannschaft' : request.matchdict['heim'], 'heimErgebnis': int( round(heimErgebnis) ), 'gastmannschaft': request.matchdict['gast']  , 'gastErgebnis' : int( round(gastErgebnis) ) } 
+     
+    return {'heimnotround': ( heimErgebnis) ), 'gastnotround' : (gastErgebnis) ) , 
+'heimmannschaft' : request.matchdict['heim'], 'heimErgebnis': int( round(heimErgebnis) ), 'gastmannschaft': request.matchdict['gast']  , 'gastErgebnis' : int( round(gastErgebnis) ) } 
 
 def currentgroup(): 
     client = Client(openLigaWSDLUrl())
