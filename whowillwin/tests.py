@@ -14,9 +14,10 @@ class ViewTests(unittest.TestCase):
     def setUp(self):
         self.config = testing.setUp()
         #Mocking WSDL Instance
-        fca = Team("FCA", "FCA", "FCA")
-        koeln = Team("1. FC Köln", "1. FC Köln", "1. FC Köln")
-        listeMannschaften = [fca, koeln]
+        fca = Team(u"FCA", u"FCA", u"FCA")
+        koeln = Team(u"1. FC Köln", u"1. FC Köln", u"1. FC Köln")
+        munchen = Team(u"München", u"München", u"München")
+        listeMannschaften = [fca, koeln, munchen]
         self.mockedTeams = ArrayOfTeam(listeMannschaften) 
         
     def tearDown(self):
@@ -61,7 +62,8 @@ class ViewTests(unittest.TestCase):
         #print type(client)
         #print client 
         #client = mannschaften
-        self.assertIn("1. FC Köln".decode("utf-8"), mannschaften(client).items()[0][1], "1. FC Köln nicht vorhanden")
+#        self.assertIn(u"1. FC Köln", mannschaften(client).items()[0][1], "1. FC Köln nicht vorhanden")
+        self.assertIn("1. FC Köln".decode("utf-8"), mannschaften(client).items()[0][1], u"1. FC Köln nicht vorhanden")
         
     def IstFCKoelnInDictionaryWSDL(self):
         year = 2012
@@ -69,16 +71,16 @@ class ViewTests(unittest.TestCase):
         #print type(client)
         #print client 
         #client = mannschaften
-        self.assertIn("1. FC Köln".decode("utf-8"), mannschaften(client).items()[0][1], "1. FC Köln nicht vorhanden")   
+        self.assertIn(u"1. FC Köln".decode("utf-8"), mannschaften(client).items()[0][1], u"1. FC Köln nicht vorhanden")   
         
     def AktuellerSpieltagWSDL(self):
         group = currentgroup()
         spieltag = aktuellerSpieltag(group)
-        self.assertEqual(type(1), type(spieltag), "Typ des Spieltags int ist nicht korrekt"  )   
+        self.assertEqual(type(1), type(spieltag), u"Typ des Spieltags int ist nicht korrekt"  )   
     
     def testAktuellerSpieltagMocked(self):
         mockedGroup = Group("31. Spieltag",31, 265 )
         #group = group2011()
-        self.assertEqual(type(1), type(mockedGroup.groupOrderID), "Typ des Spieltags int ist nicht korrekt" )   
+        self.assertEqual(type(1), type(mockedGroup.groupOrderID), u"Typ des Spieltags int ist nicht korrekt" )   
        
         

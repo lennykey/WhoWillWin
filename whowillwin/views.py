@@ -67,7 +67,7 @@ def mannschaften(client):
     #for team in teams.ArrayOfTeam:
     for team in teamList:
         #print team.teamName
-        teamNameList.append( team.teamName.encode('utf-8').decode('utf-8') )
+        teamNameList.append( team.teamName )
 
     #result = []
     #result.append('<ul>')
@@ -157,7 +157,8 @@ def getMatchesForTeam(mannschaft):
 #		'\nAnzahl Tore: ' + str(gesuchteMannschaftTore) +		
 #		'\nAnzahl Gegentore: ' + str(gesuchteMannschaftGegentore) +		
 #		''.join( result )
-#		) 
+#		)
+
 
 @view_config(route_name='matchesfor', renderer='templates/getmatches.pt')
 def getMatches(request):
@@ -176,7 +177,6 @@ def whoWillWin(request):
 @view_config(route_name='compareTwoTeamsSeason', renderer='templates/compareTwoTeamsSeason.pt')
 def compareTwoTeamsSeason(request):
     #heimErgebnis = ( float( request.matchdict['heimtore'] ) / float (request.matchdict['gastgegentore'] ) ) * ( float (request.matchdict['heimtore'] ) / float( request.matchdict['spieltag'] ) )    
-    
     #gastErgebnis = ( float( request.matchdict['gasttore'] ) / float (request.matchdict['heimgegentore'] ) ) * ( float (request.matchdict['gasttore'] ) / float( request.matchdict['spieltag'] ) )    
     
     heimErgebnis = ( ( float( request.matchdict['heimtore'] ) / float( request.matchdict['spieltag'] ) ) + float( request.matchdict['gastgegentore'] ) / float( request.matchdict['spieltag'] ) ) / 2 
@@ -199,3 +199,4 @@ def aktuellerSpieltag(group):
     log.debug(group.groupOrderID)
     log.debug(group.groupID)
     return group.groupOrderID
+
